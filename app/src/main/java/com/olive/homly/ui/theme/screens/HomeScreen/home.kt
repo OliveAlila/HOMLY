@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.olive.homly.R
 import com.olive.homly.navigation.ROUTE_CATEGORIES
 import com.olive.homly.navigation.ROUTE_LOGIN
+import com.olive.homly.navigation.ROUTE_SIGNUP
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
@@ -37,8 +38,10 @@ fun HomeScreen(navController: NavHostController) {
             .background(Color.White))
     {
 
-        Image(painter = painterResource(id = R.drawable.homlylogo ),
+        Image(painter = painterResource(id = R.drawable.homlylogo2),
             contentDescription = "time" )
+
+        Spacer(modifier = Modifier.height(50.dp))
 
         Text(
             text = "Welcome to HOMLY",
@@ -49,6 +52,19 @@ fun HomeScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(50.dp))
 
         Button(onClick = {
+            navController.navigate(ROUTE_SIGNUP)
+        },
+            modifier = Modifier.width(300.dp),
+            border = null,
+            colors = ButtonDefaults.buttonColors(Color.Transparent)) {
+
+            Text(
+                text = "Don't have an Account yet? Signup",
+                color = Color.Black)
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+        Button(onClick = {
             navController.navigate(ROUTE_LOGIN)
         },
             modifier = Modifier.width(300.dp),
@@ -56,10 +72,11 @@ fun HomeScreen(navController: NavHostController) {
             colors = ButtonDefaults.buttonColors(Color.Transparent)) {
 
             Text(
-                text = "Login or Create an Account",
+                text = "Login",
                 color = Color.Black)
         }
         Spacer(modifier = Modifier.height(30.dp))
+
 
         Button(onClick = {
             navController.navigate(ROUTE_CATEGORIES)

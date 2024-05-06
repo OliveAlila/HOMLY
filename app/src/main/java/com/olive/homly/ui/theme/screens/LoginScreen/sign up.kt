@@ -1,15 +1,17 @@
 package com.olive.homly.ui.theme.screens.LoginScreen
 
 import android.content.Intent
-import android.hardware.camera2.params.BlackLevelPattern
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -20,8 +22,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +47,7 @@ import com.olive.homly.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun SignupScreen(navController: NavHostController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
@@ -53,13 +55,7 @@ fun LoginScreen(navController: NavHostController) {
     val context = LocalContext.current
     val gradientColorList = listOf(
         Color(0xFFAA00FF),
-        Color(0xFFC9378B)
-//        Color(0xFFD4B9D3),
-//        Color(0xFFD4B9D3),
-//        Color(0xFFD4B9D3),
-//        Color(0xFFD4B9D3),
-    )
-
+        Color(0xFFC9378B))
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -72,39 +68,38 @@ fun LoginScreen(navController: NavHostController) {
                     colors = gradientColorList
                 )
             )
+            .scrollable(rememberScrollState(), Orientation.Vertical)
     )
     {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         Image(
             painter = painterResource(id = R.drawable.homlylogo2),
             contentDescription = "logo"
         )
 
-        Spacer(modifier = Modifier.height(70.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         Text(
-            text = "WELCOME BACK",
-            color = Color.Black,
-            fontSize = 30.sp
-        )
-
-        Text(
-            text = "Login to your Account.",
+            text = "Login or Create an Account.",
             color = Color.Magenta,
             fontSize = 25.sp,
             fontFamily = FontFamily.Cursive
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Icon(imageVector = Icons.Default.Person, contentDescription = "profile")
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
+            value = name,
+            onValueChange = { name = it },
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Default.Email,
-                    contentDescription = "icon"
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "person"
                 )
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -113,7 +108,7 @@ fun LoginScreen(navController: NavHostController) {
             ),
             label = {
                 Text(
-                    text = "User@mail.com",
+                    text = "Enter Name",
                     color = Color.Black,
                     fontSize = 20.sp
                 )
@@ -124,8 +119,32 @@ fun LoginScreen(navController: NavHostController) {
                 .background(Color.White)
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
-
+        Spacer(modifier = Modifier.height(10.dp))
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = "icon"
+                )
+            },
+            label = {
+                Text(
+                    text = "User@mail.com",
+                    color = Color.Black,
+                    fontSize = 20.sp
+                )
+            },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.White,
+                unfocusedBorderColor = Color.Transparent
+            ),
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .background(Color.White)
+        )
+        Spacer(modifier = Modifier.height(10.dp))
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
@@ -153,6 +172,35 @@ fun LoginScreen(navController: NavHostController) {
         )
 
         Spacer(modifier = Modifier.height(10.dp))
+        OutlinedTextField(
+            value = confirmpassword,
+            onValueChange = { confirmpassword = it },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = "cpass"
+                )
+            },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.White,
+                unfocusedBorderColor = Color.Transparent
+            ),
+            label = {
+                Text(
+                    text = "Confirm Password",
+                    color = Color.Black,
+                    fontSize = 20.sp
+                )
+            },
+
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .background(Color.White)
+        )
+
+
+
+        Spacer(modifier = Modifier.height(10.dp))
 
         Button(
             onClick = {
@@ -170,48 +218,31 @@ fun LoginScreen(navController: NavHostController) {
                 fontFamily = FontFamily.Cursive
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
-
-            Button(
-                onClick = {
-                    val intent = Intent(context, MainActivity::class.java)
-                    context.startActivity(intent)
-                },
-                modifier = Modifier
-                    .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(Color.Transparent)
-            ) {
-                Text(
-                    text = "Don't have an Account yet?  Sign up",
-                    fontSize = 20.sp,
-                    color = Color.Black,
-                    fontFamily = FontFamily.Cursive
-                )
-
-            }
         }
+
     }
 }
-    @Composable
-    private fun gradientbackgroundBrush(
-        isVerticalGradient: Boolean,
-        colors: List<Color>
-    ): Brush {
-        val endOffset = if (isVerticalGradient) {
-            Offset(0f, Float.POSITIVE_INFINITY)
-        } else {
-            Offset(Float.POSITIVE_INFINITY, 0f)
-        }
-        return Brush.linearGradient(
-            colors = colors,
-            start = Offset.Zero,
-            end = endOffset
-        )
-
+@Composable
+private fun gradientbackgroundBrush(
+    isVerticalGradient: Boolean,
+    colors:List<Color>
+): Brush {
+    val endOffset = if (isVerticalGradient){
+        Offset(0f, Float.POSITIVE_INFINITY)
+    }else{
+        Offset(Float.POSITIVE_INFINITY, 0f)
     }
+    return Brush.linearGradient(
+        colors = colors,
+        start = Offset.Zero,
+        end = endOffset
+    )
+
+}
+
 
 @Preview
 @Composable
-private fun Loginprev() {
-    LoginScreen(rememberNavController())
+private fun Sigupprev() {
+    SignupScreen(navController = rememberNavController())
 }
